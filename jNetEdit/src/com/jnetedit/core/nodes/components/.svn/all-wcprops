@@ -1,0 +1,53 @@
+K 25
+svn:wc:ra_dav:version-url
+V 71
+/svn/!svn/ver/230/trunk/jNetEdit/src/com/jnetedit/core/nodes/components
+END
+AbstractChain.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/183/trunk/jNetEdit/src/com/jnetedit/core/nodes/components/AbstractChain.java
+END
+AbstractRule.java
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/svn/!svn/ver/183/trunk/jNetEdit/src/com/jnetedit/core/nodes/components/AbstractRule.java
+END
+Rule.java
+K 25
+svn:wc:ra_dav:version-url
+V 81
+/svn/!svn/ver/183/trunk/jNetEdit/src/com/jnetedit/core/nodes/components/Rule.java
+END
+Interface.java
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/svn/!svn/ver/230/trunk/jNetEdit/src/com/jnetedit/core/nodes/components/Interface.java
+END
+Route.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/230/trunk/jNetEdit/src/com/jnetedit/core/nodes/components/Route.java
+END
+AbstractRoute.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/230/trunk/jNetEdit/src/com/jnetedit/core/nodes/components/AbstractRoute.java
+END
+AbstractInterface.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/!svn/ver/230/trunk/jNetEdit/src/com/jnetedit/core/nodes/components/AbstractInterface.java
+END
+Chain.java
+K 25
+svn:wc:ra_dav:version-url
+V 82
+/svn/!svn/ver/216/trunk/jNetEdit/src/com/jnetedit/core/nodes/components/Chain.java
+END
