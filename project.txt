@@ -1,0 +1,373 @@
+Passo 1:
+
+Domini di collisione:
+    TAP: 2
+    CD1: 130
+    CD2: 2
+    CD4: 2
+    CD5: 206
+    CD6: 11
+    CD7: 225
+    CD8: 104
+
+Passo 2: Calcolo delle maschere per i domini di collisione
+
+    Tenere conto del numero richiesto + Network e Broadcast
+
+    TAP: 2^2 >= 4 --> x = 2
+    Maschera = 32 - 2 = 30
+
+    CD2: x = 2
+    Maschera = 30 
+
+    CD4:x = 2
+    Maschera = 30 
+
+    CD1: 2^x >= 132 --> x = 8
+    Maschera = 32-8 = 24
+
+    CD5: 2^x >= 208 --> x = 8
+    Maschera = 32-8 = 24
+
+    CD6: 2^x >= 13 --> x = 4
+    Maschera = 32 - 4 = 28
+
+    CD7: 2^x >= 227 --> x = 8
+    Maschera = 32 - 8 = 24
+
+    CD8: 2^x >= 106 --> x = 7
+    Maschera = 32 - 7 = 25
+
+
+Step 3: Ordinare domini di collisione 
+in ordine di maschera  più piccola
+
+    TAP:        Maschera = 30
+    CD2:        Maschera = 30 
+    CD4:        Maschera = 30 
+    CD1(Green): Maschera = 24
+    CD5(DMZ):   Maschera = 24
+    CD6(DMZ):   Maschera = 28
+    CD7(Red):   Maschera = 24
+    CD8(Red):   Maschera = 25
+
+Green Area: 
+    CD1: 24
+
+Red Area:
+    CD7: 24
+    CD8: 25
+
+DMZ Area:
+    CD5:24
+    CD6:28
+
+No Area:
+    TAP: 30
+    CD2: 30
+    CD4: 30
+
+Step 4: ordinamento dei domini di collisione da
+maschera più bassa a maschera più alta.
+
+Green Area: 
+    CD1: 24
+
+Red Area:
+    CD7: 24
+    CD8: 25
+
+DMZ Area:
+    CD5:24
+    CD6:28
+
+No Area:
+    TAP: 30
+    CD2: 30
+    CD4: 30
+
+STEP 5: accorpamento aree - Separare le aree 
+logicamente come se fossero sottoreti differenti
+
+Green Area: 24
+    CD1: 24
+
+Red Area: 23
+    CD7: 24
+    CD8: 25
+
+DMZ Area: 23
+    CD5: 24
+    CD6: 28
+
+Senza area : niente accorpamento
+    TAP: 30
+    CD2: 30
+    CD4: 30
+
+STEP 6: ordinamento delle aree per maschera
+
+Red Area: 23
+    CD7: 24
+    CD8: 25
+
+DMZ Area: 23
+    CD5: 24
+    CD6: 28
+
+Green Area: 24
+    CD1: 24
+
+Senza area : niente accorpamento
+    TAP: 30
+    CD2: 30
+    CD4: 30
+
+STEP 7: Assegnare NETWORK e BROADCAST
+Partiamo con 10.0.0.0 --> primo della rete 
+24 bit a disposizione
+
+Assegnamento a Red Area)
+
+CD7: 24
+    NETWORK: 10.0.0.0/24
+    NETMASK: 24
+        11111111.11111111.11111111.00000000
+        255.255.255.0
+    BROADCAST:
+        NETWORK IN BINARIO +
+        MASCHERA INVERTITA =
+            00001010.00000000.00000000.00000000 + 
+            00000000.00000000.00000000.11111111 =
+            00001010.00000000.00000000.11111111 : BROADCAST
+        BROADCAST DECIMALE: 10.0.0.255
+
+CD8: 25
+    CALCOLO NETWORK: BROADCAST PREC + 1 bit
+        10.0.0.255 + 1 = 10.0.1.0  
+
+    NETWORK =10.0.1.0 /25
+    NETMASK: 25
+        11111111.11111111.11111111.10000000
+        255.255.255.128
+    BROADCAST:
+        00001010.00000000.00000001.00000000 + 
+        00000000.00000000.00000000.01111111 =
+        00001010.00000000.00000001.01111111 : BROADCAST
+    BROADCAST DECIMALE: 10.0.1.127
+
+CD_RED: 23
+
+    NETWORK: 10.0.0.0/23
+    NETMASK: 
+        11111111.11111111.11111110.00000000
+        255.255.254.0
+    BROADCAST:
+        00001010.00000000.00000000.00000000 + 
+        00000000.00000000.00000001.11111111 =
+        00001010.00000000.00000001.11111111 = BROADCAST
+    BROADCAST DECIMALE: 10.0.1.255
+
+                FINE AREA RED
+########################################################
+
+***********
+DMZ Area: 23
+    CD5: 24
+    CD6: 28
+***********
+
+Assegnamento a DMZ Area)
+
+CD5: 24
+    CALCOLO NETWORK: 10.0.1.255 + 1 = 10.0.2.0/24
+
+    NETWORK: 10.0.2.0/24
+    NETMASK: 
+        11111111.11111111.11111111.00000000 
+        255.255.255.0
+    BROADCAST:
+        10.0.2.0 + max 0 = 10.0.2.0 + 2^8 =
+        = 10.0.2.0 + 256 - 1 (-1 perchè il network è gia assegnato)
+        = 10.0.2.255 --> Broadcast
+
+CD6: 28
+    CALCOLO NETWORK: 10.0.2.255 + 1 = 10.0.3.0
+
+    NETWORK: 10.0.3.0/28
+    NETMASK:
+        11111111.11111111.11111111.11110000
+        255.255.255.240
+    BROADCAST: 10.0.3.0 + 2^4 = 16 - 1  =
+                10.0.3.15
+
+CD_DMZ: 23
+
+    NETWORK: 10.0.2.0/23
+    NETMASK: 
+        11111111.11111111.11111110.00000000
+        255.255.254.0
+    BROADCAST: 10.0.2.0 + 2^9 = 
+                = 10.0.2.0 + 512 - 1 =
+                = 10.0.3.0 + 255 = 
+                = 10.0.3.255 --> Broadcast
+
+                FINE AREA DMZ
+########################################################
+
+***************
+Green Area: 24
+    CD1: 24
+***************
+Assegnamento a Green Area)
+
+CD1: 24
+
+    CALCOLO NETWORK: 10.0.3.255 + 1 = 10.0.4.0
+
+    NETWORK: 10.0.4.0/24
+    NETMASK:
+        11111111.11111111.11111111.00000000
+        255.255.255.0
+    BROADCAST:
+        10.0.4.0 + 2^8 - 1 =
+        = 10.0.4.0 + 255 = 
+        = 10.0.4.255 --> Broadcast
+
+CD_Green:24
+    COMBACIA CON CD1
+
+    CALCOLO NETWORK: 10.0.3.255 + 1 = 10.0.4.0
+
+    NETWORK: 10.0.4.0/24
+    NETMASK:
+        11111111.11111111.11111111.00000000
+        255.255.255.0
+    BROADCAST:
+        10.0.4.0 + 2^8 - 1 =
+        = 10.0.4.0 + 255 = 
+        = 10.0.4.255 --> Broadcast
+
+                FINE AREA GREEN
+########################################################
+
+Calcolo per quelli che non appartengono ad un area
+
+********************************
+Senza area : niente accorpamento
+    TAP: 30
+    CD2: 30
+    CD4: 30
+********************************
+
+TAP: 30
+
+    CALCOLO NETWORK: 10.0.4.255 + 1 = 10.0.5.0
+
+    NETWORK: 10.0.5.0/30
+    NETMASK:
+        11111111.11111111.11111111.11111100
+        255.255.255.252
+    BROADCAST: 10.0.5.0 + 2^2 - 1 = 10.0.5.0 + 3 =
+    = 10.0.5.3 --> Broadcast
+
+CD2: 30
+
+    CALCOLO NETWORK: 10.0.5.3 + 1 = 10.0.5.4
+
+    NETWORK: 10.0.5.4/30
+    NETMASK: 
+        11111111.11111111.11111111.11111100
+        255.255.255.252
+    BROADCAST: 10.0.5.4 + 2^2 - 1 = 10.0.5.4 + 3 =
+    = 10.0.5.7 --> Broadcast
+
+CD4: 30
+    
+    CALCOLO NETWORK: 10.0.5.7 + 1 = 10.0.5.8
+
+    NETWORK: 10.0.5.8/30
+    NETMASK: 
+        11111111.11111111.11111111.11111100
+        255.255.255.252
+    BROADCAST: 10.0.5.8 + 2^2 - 1 = 10.0.5.8 + 3 =
+    = 10.0.5.11 --> Broadcast
+
+                FINE SENZA AREE
+########################################################
+
+
+Riorganizzazione dati per vedere meglio
+
+CD7: 24
+    NETWORK: 10.0.0.0/24
+    NETMASK: 255.255.255.0
+    BROADCAST: 10.0.0.255
+
+CD8: 25
+    
+    NETWORK: 10.0.1.0 /25
+    NETMASK: 255.255.255.128
+    BROADCAST: 10.0.1.127
+
+CD_RED: 23
+
+    NETWORK: 10.0.0.0/23
+    NETMASK: 255.255.254.0
+    BROADCAST: 10.0.1.255
+
+----------------------------
+
+CD5: 24
+
+    NETWORK: 10.0.2.0/24
+    NETMASK: 255.255.255.0
+    BROADCAST: 10.0.2.255 
+
+CD6: 28
+
+    NETWORK: 10.0.3.0/28
+    NETMASK: 255.255.255.240
+    BROADCAST: 10.0.3.15
+
+CD_DMZ: 23
+
+    NETWORK: 10.0.2.0/23
+    NETMASK: 255.255.254.0
+    BROADCAST: 10.0.3.255 
+
+----------------------------
+
+
+CD1: 24
+
+    NETWORK: 10.0.4.0/24
+    NETMASK: 255.255.255.0
+    BROADCAST: 10.0.4.255
+
+CD_Green:24
+
+    NETWORK: 10.0.4.0/24
+    NETMASK: 255.255.255.0
+    BROADCAST: 10.0.4.255
+
+---------------------------
+TAP: 30
+
+    NETWORK: 10.0.5.0/30
+    NETMASK: 255.255.255.252
+    BROADCAST: 10.0.5.3 
+
+CD2: 30
+
+    NETWORK: 10.0.5.4/30
+    NETMASK: 255.255.255.252
+    BROADCAST: 10.0.5.7 
+
+CD4: 30
+    
+    NETWORK: 10.0.5.8/30
+    NETMASK: 255.255.255.252
+    BROADCAST: 10.0.5.11 
+
+----------------------------
