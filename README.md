@@ -1,5 +1,5 @@
 ﻿# Sor-project-29
-![topology](https://github.com/AlexFazio64/Sor-project-29/blob/main/topology_gns.png?raw=true)
+![topology](./topology_gns.png)
 
 Determinare per tutti i domini di collisione, laddove mancanti, i seguenti valori: 
 
@@ -37,4 +37,4 @@ esterno all’area (ANCHE se non è esplicitamente presente il server corrispond
   - Se S compare in un’area DMZ, i suoi servizi devono essere visibili da qualsiasi host; 
   - Se S compare in un’area RED, i suoi servizi devono essere visibili dalle aree DMZ; 
 
-![topology](https://github.com/AlexFazio64/Sor-project-29/blob/main/topology.png?raw=true)
+![topology_base](./topology.png)
