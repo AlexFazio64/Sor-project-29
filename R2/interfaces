@@ -1,0 +1,45 @@
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+allow-hotplug eth0
+#iface eth0 inet dhcp
+
+auto eth0
+iface eth0 inet static
+        network 10.0.5.8/30
+        netmask 255.255.255.252
+        broadcast 10.0.5.11
+        address 10.0.5.10
+
+auto eth1
+iface eth1 inet static
+        network 10.0.2.0/24
+        netmask 255.255.255.0
+        broadcast 10.0.2.255
+        address 10.0.2.1
+
+auto eth2
+iface eth2 inet static
+        network 10.0.3.0/28
+        netmask 255.255.255.240
+        broadcast 10.0.3.15
+        address 10.0.3.1
+
+#R2 -> CD2
+post-up route add -net 10.0.5.4 netmask 255.255.255.252 gw 10.0.5.9 dev eth0
+
+#R2 -> GREEN
+post-up route add -net 10.0.4.0 netmask 255.255.255.0 gw 10.0.5.9 dev eth0
+
+#R2 -> TAP
+post-up route add -net 10.0.5.0 netmask 255.255.255.252 gw 10.0.5.9 dev eth0
+
+#R2 -> RED
+post-up route add -net 10.0.0.0 netmask 255.255.254.0 gw 10.0.5.9 dev eth0

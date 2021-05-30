@@ -1,0 +1,2 @@
+set pcname SNatted(Telnet)
+ip 10.0.2.2/24 10.0.2.1
