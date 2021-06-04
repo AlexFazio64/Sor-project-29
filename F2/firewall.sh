@@ -36,11 +36,11 @@ iptables -N redDmz
 
 #Mapping the chains
 #DMZ -> RED
-iptables -A FORWARD -i eth0 -s 10.0.2.0/23 -j dmzRed
+iptables -A FORWARD -i eth0 -s 10.0.2.0/23 -d 10.0.0.0/23 -j dmzRed
 iptables -A dmzRed -j ACCEPT
 
 #RED -> DMZ
-iptables -A FORWARD -o eth0 -d 10.0.2.0/23 -j redDmz
+iptables -A FORWARD -o eth0 -s 10.0.0.0/23 -d 10.0.2.0/23 -j redDmz
 iptables -A redDmz -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 

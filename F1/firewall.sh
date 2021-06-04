@@ -11,6 +11,18 @@ iptables -P INPUT DROP
 iptables -P OUTPUT DROP
 iptables -P FORWARD DROP
 
+#NATTING RULES
+#ssh debug
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 2222 -j DNAT --to-destination 10.0.5.6:22
+
+#DNS - 53
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 53 -j DNAT --to-destination 10.0.3.3
+#SMTP - 25
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 25 -j DNAT --to-destination 10.0.3.4
+#FTP - 21
+iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 21 -j DNAT --to-destination 10.0.3.5
+
+
 #accept ssh only debug
 #to me
 iptables -A INPUT -i eth0 -p tcp --dport 22 -j ACCEPT

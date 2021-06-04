@@ -17,6 +17,7 @@ iface eth0 inet static
         netmask 255.255.255.252
         broadcast 10.0.5.3
         address 10.0.5.2
+        gateway 10.0.5.1
 
 auto eth1
 iface eth1 inet static
